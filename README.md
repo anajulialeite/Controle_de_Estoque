@@ -11,6 +11,8 @@
 
 O **EstoqueMaster** é um sistema completo e intuitivo para controle e gestão de estoque de mercadorias. Ele foi projetado para auxiliar no gerenciamento de inventário de pequenas e médias empresas, permitindo cadastrar categorias, fornecedores e produtos, além de acompanhar todas as movimentações de entrada e saída com relatórios financeiros automáticos e alertas inteligentes de reposição.
 
+---
+
 ## 🛠️ Tecnologias Utilizadas
 
 - **Backend**:
