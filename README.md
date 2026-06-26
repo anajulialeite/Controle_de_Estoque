@@ -34,7 +34,7 @@ O **EstoqueMaster** é um sistema completo e intuitivo para controle e gestão d
 
 ## Demostração em vídeo
 
-<a href="https://www.linkedin.com/posts/SEU-LINK" target="_blank" rel="noopener noreferrer">
+<a href="###" target="_blank" rel="noopener noreferrer">
     <img src="https://img.shields.io/badge/Assistir%20Demonstra%C3%A7%C3%A3o-1C003F?style=for-the-badge&logo=linkedin&logoColor=white" alt="Demonstração no LinkedIn"/>
 </a>
 
