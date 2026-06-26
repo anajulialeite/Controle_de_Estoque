@@ -32,6 +32,12 @@ O **EstoqueMaster** é um sistema completo e intuitivo para controle e gestão d
 
 ---
 
+## Vídeo do Projeto
+
+<a href="###" style="text-decoration:none" target="_blank" rel="noopener noreferrer">
+    <img src="https://img.shields.io/badge/Linkedin-%231C003F?style=for-the-badge&logo=LinkedIn&logoColor=white" alt="Projeto"/>
+</a>
+
 ## Autora
 
 Ana Júlia de Lima Aguiar Leite
