@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::#content})}">
+<head>
+    <title>Dashboard - Controle de Estoque</title>
+</head>
+<body>
+
+<div id="content">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <div>
+            <h1 class="h2 mb-1 fw-bold text-dark"><i class="bi bi-speedometer2 me-2 text-primary"></i>Dashboard de Controle de Estoque</h1>
+            <p class="text-muted small mb-0">
+                <i class="bi bi-clock me-1"></i> Última atualização: <span id="current-timestamp">--/--/----</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Cards de Métricas -->
+    <div class="row g-4 mb-4">
+        <!-- Produtos -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card card-hover h-100 border-start border-primary border-4">
+                <div class="card-body d-flex align-items-center">
+                    <div class="flex-shrink-0 bg-primary-subtle text-primary p-3 rounded-3 me-3">
+                        <i class="bi bi-box fs-3"></i>
+                    </div>
+                    <div>
+                        <h6 class="card-subtitle text-muted mb-1">Total de Produtos</h6>
+                        <h3 class="card-title mb-0 fw-bold" th:text="${totalProdutos}">0</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categorias -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card card-hover h-100 border-start border-info border-4">
+                <div class="card-body d-flex align-items-center">
+                    <div class="flex-shrink-0 bg-info-subtle text-info p-3 rounded-3 me-3">
+                        <i class="bi bi-tags fs-3"></i>
+                    </div>
+                    <div>
+                        <h6 class="card-subtitle text-muted mb-1">Categorias</h6>
+                        <h3 class="card-title mb-0 fw-bold" th:text="${totalCategorias}">0</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fornecedores -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card card-hover h-100 border-start border-secondary border-4">
+                <div class="card-body d-flex align-items-center">
+                    <div class="flex-shrink-0 bg-secondary-subtle text-secondary p-3 rounded-3 me-3">
+                        <i class="bi bi-truck fs-3"></i>
+                    </div>
+                    <div>
+                        <h6 class="card-subtitle text-muted mb-1">Fornecedores</h6>
+                        <h3 class="card-title mb-0 fw-bold" th:text="${totalFornecedores}">0</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Capital em Estoque (Custo) -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card card-hover h-100 border-start border-success border-4">
+                <div class="card-body d-flex align-items-center">
+                    <div class="flex-shrink-0 bg-success-subtle text-success p-3 rounded-3 me-3">
+                        <i class="bi bi-currency-dollar fs-3"></i>
+                    </div>
+                    <div>
+                        <h6 class="card-subtitle text-muted mb-1">Capital em Estoque (Custo)</h6>
+                        <h3 class="card-title mb-0 fw-bold" th:text="'R$ ' + ${#numbers.formatDecimal(custoTotalEstoque, 1, 2, 'POINT')}">R$ 0,00</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Faturamento Estimado (Venda) -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card card-hover h-100 border-start border-4" style="border-left-color: #6f42c1 !important;">
+                <div class="card-body d-flex align-items-center">
+                    <div class="flex-shrink-0 p-3 rounded-3 me-3" style="background-color: #e2d9f3; color: #6f42c1;">
+                        <i class="bi bi-graph-up-arrow fs-3"></i>
+                    </div>
+                    <div>
+                        <h6 class="card-subtitle text-muted mb-1">Faturamento Estimado (Venda)</h6>
+                        <h3 class="card-title mb-0 fw-bold" th:text="'R$ ' + ${#numbers.formatDecimal(valorVendaEstoque, 1, 2, 'POINT')}">R$ 0,00</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Estoque Baixo (Clicável) -->
+        <div class="col-12 col-md-6 col-lg-4">
+            <a th:href="@{/produtos/estoque-baixo}" class="text-decoration-none text-reset">
+                <div class="card card-hover h-100 border-start border-4" 
+                     th:classappend="${estoqueBaixo > 0} ? 'border-danger bg-danger-subtle' : 'border-warning bg-warning-subtle'">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="flex-shrink-0 p-3 rounded-3 me-3" 
+                             th:classappend="${estoqueBaixo > 0} ? 'bg-danger text-white' : 'bg-warning text-dark'">
+                            <i class="bi bi-exclamation-triangle fs-3"></i>
+                        </div>
+                        <div>
+                            <h6 class="card-subtitle mb-1 fw-semibold" th:classappend="${estoqueBaixo > 0} ? 'text-danger-emphasis' : 'text-warning-emphasis'">Estoque Baixo</h6>
+                            <h3 class="card-title mb-0 fw-bold" th:classappend="${estoqueBaixo > 0} ? 'text-danger' : 'text-dark'" th:text="${estoqueBaixo}">0</h3>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row g-4 mb-4">
+        <!-- Gráfico 1: Estoque por Produto -->
+        <div class="col-12 col-lg-8">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0 text-dark font-weight-bold"><i class="bi bi-bar-chart-line me-2 text-primary"></i>Top 5 Produtos com Maior Estoque</h5>
+                </div>
+                <div class="card-body">
+                    <div style="position: relative; height:250px; width:100%">
+                        <canvas id="chartEstoque"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Gráfico 2: Entrada vs Saída -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0 text-dark font-weight-bold"><i class="bi bi-pie-chart me-2 text-success"></i>Balanço de Movimentações (Qtd)</h5>
+                </div>
+                <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                    <div style="position: relative; height:200px; width:100%">
+                        <canvas id="chartMovimentacoes"></canvas>
+                    </div>
+                    <div class="mt-3 w-100 border-top pt-2">
+                        <div class="d-flex justify-content-between mb-1 small text-muted">
+                            <span><i class="bi bi-arrow-down-left text-success me-1"></i>Entradas:</span>
+                            <span class="fw-bold text-success" th:text="${totalEntradas}">0</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1 small text-muted">
+                            <span><i class="bi bi-arrow-up-right text-danger me-1"></i>Saídas:</span>
+                            <span class="fw-bold text-danger" th:text="${totalSaidas}">0</span>
+                        </div>
+                        <div class="d-flex justify-content-between small text-muted">
+                            <span><i class="bi bi-calculator me-1"></i>Balanço Líquido:</span>
+                            <span class="fw-bold" 
+                                  th:classappend="${totalEntradas - totalSaidas >= 0} ? 'text-success' : 'text-danger'" 
+                                  th:text="${(totalEntradas - totalSaidas >= 0 ? '+' : '') + (totalEntradas - totalSaidas)}">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Últimas Movimentações -->
+        <div class="col-12 col-lg-8">
+            <div class="card h-100">
+                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 text-dark font-weight-bold"><i class="bi bi-clock-history me-2 text-primary"></i>Últimas Movimentações</h5>
+                    <a th:href="@{/movimentacoes}" class="btn btn-sm btn-outline-primary">Ver Todas</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped mb-0 align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-4">Data/Hora</th>
+                                    <th>Produto</th>
+                                    <th>Tipo</th>
+                                    <th>Quantidade</th>
+                                    <th class="pe-4">Observação</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="mov : ${ultimasMovimentacoes}">
+                                    <td class="ps-4" th:text="${#temporals.format(mov.dataHora, 'dd/MM/yyyy HH:mm')}">15/06/2026 20:00</td>
+                                    <td th:text="${mov.produto.nome}">Produto X</td>
+                                    <td>
+                                        <span class="badge rounded-pill" 
+                                              th:classappend="${mov.tipo.name() == 'ENTRADA'} ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'"
+                                              th:text="${mov.tipo}">ENTRADA</span>
+                                    </td>
+                                    <td th:text="${mov.quantidade}">0</td>
+                                    <td class="pe-4 text-muted small" th:text="${mov.observacao}">Observação</td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(ultimasMovimentacoes)}">
+                                    <td colspan="5" class="text-center py-4 text-muted">Nenhuma movimentação registrada até o momento.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ações Rápidas -->
+        <div class="col-12 col-lg-4">
+            <div class="card h-100">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0 text-dark font-weight-bold"><i class="bi bi-lightning me-2 text-warning"></i>Ações Rápidas</h5>
+                </div>
+                <div class="card-body d-grid gap-3">
+                    <a th:href="@{/produtos/novo}" class="btn btn-outline-primary text-start py-3 fs-6">
+                        <i class="bi bi-plus-circle me-2 text-primary"></i> Cadastrar Novo Produto
+                    </a>
+                    <a th:href="@{/movimentacoes/nova}" class="btn btn-outline-primary text-start py-3 fs-6">
+                        <i class="bi bi-arrow-left-right me-2 text-success"></i> Registrar Entrada/Saída
+                    </a>
+                    <a th:href="@{/categorias/nova}" class="btn btn-outline-primary text-start py-3 fs-6">
+                        <i class="bi bi-tags me-2 text-info"></i> Nova Categoria
+                    </a>
+                    <a th:href="@{/fornecedores/novo}" class="btn btn-outline-primary text-start py-3 fs-6">
+                        <i class="bi bi-person-plus me-2 text-dark"></i> Novo Fornecedor
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script th:inline="javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            // Gráfico 1: Estoque
+            const ctxEstoque = document.getElementById('chartEstoque').getContext('2d');
+            const estoqueLabels = [];
+            const estoqueData = [];
+            /*[# th:each="p : ${top5Produtos}"]*/
+            estoqueLabels.push(/*[[${p.nome}]]*/ '');
+            estoqueData.push(/*[[${p.quantidadeEstoque}]]*/ 0);
+            /*[/]*/
+
+            new Chart(ctxEstoque, {
+                type: 'bar',
+                data: {
+                    labels: estoqueLabels,
+                    datasets: [{
+                        label: 'Estoque Atual',
+                        data: estoqueData,
+                        backgroundColor: 'rgba(30, 60, 114, 0.85)',
+                        borderColor: '#1e3c72',
+                        borderWidth: 1,
+                        borderRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            // Gráfico 2: Movimentações
+            const ctxMov = document.getElementById('chartMovimentacoes').getContext('2d');
+            const totalEntradas = /*[[${totalEntradas}]]*/ 0;
+            const totalSaidas = /*[[${totalSaidas}]]*/ 0;
+
+            if (totalEntradas === 0 && totalSaidas === 0) {
+                new Chart(ctxMov, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Sem movimentações'],
+                        datasets: [{
+                            data: [1],
+                            backgroundColor: ['#e9ecef']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            } else {
+                new Chart(ctxMov, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Total Entradas', 'Total Saídas'],
+                        datasets: [{
+                            data: [totalEntradas, totalSaidas],
+                            backgroundColor: ['#198754', '#dc3545'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Atualizar o timestamp atual dinamicamente
+            const timestampSpan = document.getElementById('current-timestamp');
+            if (timestampSpan) {
+                const now = new Date();
+                const day = String(now.getDate()).padStart(2, '0');
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const year = now.getFullYear();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                timestampSpan.textContent = `${day}/${month}/${year} às ${hours}:${minutes}`;
+            }
+        });
+    </script>
+</div>
+
+</body>
+</html>
