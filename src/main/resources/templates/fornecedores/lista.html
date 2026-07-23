@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::title}, ~{::#content})}">
+<head>
+    <title>Fornecedores - Controle de Estoque</title>
+</head>
+<body>
+
+<div id="content">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2"><i class="bi bi-truck me-2 text-primary"></i>Fornecedores</h1>
+        <a th:href="@{/fornecedores/novo}" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i> Novo Fornecedor
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped mb-0 align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Nome</th>
+                            <th>CNPJ</th>
+                            <th>Telefone</th>
+                            <th>E-mail</th>
+                            <th>Endereço</th>
+                            <th class="pe-4 text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="forn : ${fornecedores}">
+                            <td class="ps-4 fw-semibold" th:text="${forn.nome}">Fornecedor SA</td>
+                            <td th:text="${forn.cnpj}">00.000.000/0000-00</td>
+                            <td th:text="${forn.telefone}">(00) 0000-0000</td>
+                            <td th:text="${forn.email}">fornecedor@email.com</td>
+                            <td class="text-truncate" style="max-width: 200px;" th:text="${forn.endereco}" th:title="${forn.endereco}">Rua Principal, 123</td>
+                            <td class="pe-4 text-end">
+                                <a th:href="@{/fornecedores/editar/{id}(id=${forn.id})}" class="btn btn-sm btn-outline-secondary me-1" title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a th:href="@{/fornecedores/excluir/{id}(id=${forn.id})}" class="btn btn-sm btn-outline-danger" 
+                                   onclick="return confirm('Tem certeza que deseja excluir este fornecedor?')" title="Excluir">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(fornecedores)}">
+                            <td colspan="6" class="text-center py-4 text-muted">Nenhum fornecedor cadastrado.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
